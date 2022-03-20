@@ -1,0 +1,3 @@
+[submodule "aws-infrastructure"]
+	path = aws-infrastructure
+	url = https://github.com/fischersean/aws-infrastructure.git
