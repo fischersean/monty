@@ -1,0 +1,19 @@
+FROM golang:1.17 AS builder
+
+WORKDIR /go/src/github.com/fischersean/monty
+
+COPY ./cmd/etl ./cmd
+COPY ./internal ./internal
+COPY ./pkg ./pkg
+COPY go.mod go.mod
+
+RUN go get -d -v ./...
+RUN CGO_ENABLED=0 go install -v ./...
+
+# Second, run stage
+FROM alpine:3.14
+
+WORKDIR /app
+COPY --from=builder /go/bin /usr/bin
+
+CMD ["cmd"]
