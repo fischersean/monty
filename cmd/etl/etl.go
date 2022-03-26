@@ -13,7 +13,7 @@ import (
 )
 
 const (
-	POST_LIMIT = 100
+	POST_LIMIT = 50
 )
 
 type Result struct {

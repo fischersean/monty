@@ -49,14 +49,11 @@ func RunEtl(input *EtlInputs) error {
 		}
 	}
 
-	//log.Printf("r/%s: Calculating post scores\n", input.RedditConfig.Subreddit)
 	stats, err := calcSubredditStats(data)
 	if err != nil {
 		return err
 	}
-	//log.Printf("r/%s: Finished calculating scores\n", input.RedditConfig.Subreddit)
 
-	//log.Printf("r/%s: Executing INSERT\n", input.RedditConfig.Subreddit)
 	err = storeSubredditStats(input.DatabaseConfig.Connection, input.RunId, input.RedditConfig.Subreddit, stats)
 	if err != nil {
 		return err

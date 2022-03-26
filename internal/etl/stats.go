@@ -6,8 +6,8 @@ import (
 	"github.com/jonreiter/govader"
 )
 
-// MAX_DEPTH is 5 to reduce API calls and deeply nested replies
-const MAX_DEPTH = 5
+// MAX_DEPTH is 3 to reduce total comments searched
+const MAX_DEPTH = 3
 
 type postStats struct {
 	// countComments is the denominator for the normal mean
