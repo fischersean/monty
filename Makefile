@@ -25,15 +25,3 @@ dockerrun:
 			
 fmt:
 	@gofmt -s -w .
-
-#build:
-	#@cdk synth
-
-#deploy:
-	#@make lint
-	#@cdk deploy
-	#@find . -name 'asset.*' -print0 | xargs -0 rm -r
-
-#sambuild:
-	#@cdk synth --no-staging > template.yaml
-

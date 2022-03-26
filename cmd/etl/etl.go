@@ -119,7 +119,7 @@ func main() {
 	for i := 0; i < nJobs; i++ {
 		res := <-results
 		if res.Error != nil {
-			log.Printf("❌ Error while processing r/%s: %s", res.Error, res.Error)
+			log.Printf("❌ Error while processing r/%s: %s", res.Sub, res.Error)
 			successful = false
 		}
 	}
