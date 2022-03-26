@@ -99,7 +99,7 @@ func main() {
 	results := make(chan Result, nJobs)
 
 	// deploy workers
-	nWorkers := runtime.NumCPU() * 4 // 4x since this pipeline is heavily IO limited, not CPU
+	nWorkers := runtime.NumCPU() * 10 // 10x since this pipeline is heavily IO limited, not CPU
 	for i := 0; i < nWorkers; i++ {
 		go worker(jobs, results)
 	}
