@@ -1,3 +1,4 @@
+*.xlsx
 .project
 .envrc
 # Swap

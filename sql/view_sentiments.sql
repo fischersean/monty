@@ -1,39 +1,32 @@
-SELECT COUNT(*) FROM sentiment;
-
 SELECT 
-    id, 
-    run_start,
-    run_end,
-    successful,
-    (run_end - run_start) AS duration
-FROM 
-    watermarks
-ORDER BY
-    run_start DESC
-LIMIT 5;
-
-SELECT 
-    subreddits.name,
-    run_id,
-    count_comments,
-    count_posts,
-    score_compound_weighted_mean,
-    score_compound_mean,
-    ROUND(score_compound_mean - score_compound_weighted_mean, 2) AS toxic_index
-FROM 
-    sentiment
-LEFT JOIN 
-    subreddits ON sentiment.subreddit_id=subreddits.id
-ORDER BY 
-    toxic_index DESC
-LIMIT 10;
-
--- What is the toal comments per run?
-SELECT 
-    SUM(count_comments), run_id
-FROM 
-    sentiment
-GROUP BY
-    run_id
-ORDER BY
-    run_id ASC;
+    g.name,
+    g.run_date,
+    g.run_hour,
+    g.toxic_index,
+    g.stddev_toxic_index,
+    g.stddev_toxic_index / g.toxic_index AS stdev_percent
+FROM (
+    SELECT
+        f.name,
+        f.run_date,
+        f.run_hour,
+        f.toxic_index,
+        stddev(f.toxic_index) OVER (
+            PARTITION BY f.name, f.run_date
+        ) as stddev_toxic_index
+    FROM (
+        SELECT
+            subreddits.name,
+            watermarks.run_start::DATE as run_date,
+            EXTRACT(HOUR FROM watermarks.run_start) as run_hour,
+            count_comments,
+            count_posts,
+            score_compound_weighted_mean,
+            score_compound_mean,
+            score_compound_mean - score_compound_weighted_mean AS toxic_index
+        FROM sentiment
+        LEFT JOIN subreddits ON sentiment.subreddit_id=subreddits.id
+        LEFT JOIN watermarks on sentiment.run_id=watermarks.id
+    ) AS f
+) as g
+ORDER BY g.name, g.run_date ASC, g.run_hour ASC;
