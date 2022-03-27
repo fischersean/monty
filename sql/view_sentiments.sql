@@ -28,4 +28,4 @@ FROM (
     ) AS f
 ) as g
 GROUP BY g.name, g.run_date
-ORDER BY avg_toxic_index DESC;
+ORDER BY g.run_date DESC;
